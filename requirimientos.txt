@@ -1,1 +1,11 @@
 #En este archivo van todos los requirimientos/dependencias del proyecato
+
+se requieren usar las siguientes librerias de python para el correcto funcionamiento del proyecto 
+
+pandas
+numpy
+yfinance 
+pandas-ta
+scikit-learn
+joblib
+os 
