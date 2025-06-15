@@ -9,3 +9,5 @@ pandas-ta
 scikit-learn
 joblib
 os 
+
+
