@@ -3,7 +3,7 @@
 se requieren usar las siguientes librerias de python para el correcto funcionamiento del proyecto 
 
 pandas
-numpy
+numpy version =  1.23.5 (compatible con yfinance) 
 yfinance 
 pandas-ta
 scikit-learn
