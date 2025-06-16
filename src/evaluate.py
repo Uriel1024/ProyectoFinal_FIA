@@ -9,9 +9,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 def evaluete(data_path, model_path):
 	df = pd.read_csv(data_path, index_col='Date', parse_dates = True)
-	model, selected_features = joblib.load(model_path)
+	save_data = joblib.load(model_path)
+	model = save_data['model']
+	best_features = save_data['features']
 
-	X = df[selected_features]
+	X = df[best_features]
 	y = df['Target']
 
 	X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3)
