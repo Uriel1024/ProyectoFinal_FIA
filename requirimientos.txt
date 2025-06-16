@@ -4,7 +4,7 @@ se requieren usar las siguientes librerias de python para el correcto funcionami
 
 pandas
 numpy version =  1.23.5 (compatible con yfinance) 
-yfinance 
+yfinance 	
 pandas-ta
 scikit-learn
 joblib
