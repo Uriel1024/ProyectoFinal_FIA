@@ -14,7 +14,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-empresas = ['AAPL', 'MSFT','GOOGL','TSLA','BRK.B','JPM','V','MA','NVDA']
+empresas = ['AAPL', 'MSFT','GOOGL','TSLA','INTC','JPM','V','MA','NVDA']
 for ticker in empresas: 
 	raw_path = BASE_DIR / f"data/processed/{ticker}_processed.csv"
 	print(raw_path)

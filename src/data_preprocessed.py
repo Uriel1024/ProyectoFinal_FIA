@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-#Funcion para obtener la informacion de los datos 
+#Funcion para obtener la iaanformacion de los datos 
 def  download_data(ticker, start, end, output_path):
     df = yf.download(ticker, start = start, end = end)    
     df.reset_index(inplace = True)
@@ -43,7 +43,7 @@ def preprocess_data(input_path, output_path):
 
 if __name__ == "__main__":
 
-    empresas = ['AAPL', 'MSFT','GOOGL','TSLA','BRK.B','JPM','V','MA','NVDA']
+    empresas = ['AAPL', 'MSFT','GOOGL','TSLA','INTC','JPM','V','MA','NVDA']
     for ticker in empresas: 
         raw_path = BASE_DIR / f"data/raw/{ticker}_raw.csv"
         processed_path = BASE_DIR/ f"data/processed/{ticker}_processed.csv"

@@ -57,7 +57,7 @@ def train_model(data_path, model_path):
 
 if __name__ == "__main__":
 
-    empresas = ['AAPL', 'MSFT','GOOGL','TSLA','BRK.B','JPM','V','MA','NVDA']
+    empresas = ['AAPL', 'MSFT','GOOGL','TSLA','INTC','JPM','V','MA','NVDA']
     for ticker in empresas: 
         raw_path = BASE_DIR / f"data/processed/{ticker}_processed.csv" 
         train_model(raw_path, f"{ticker}_model.pkl")           
