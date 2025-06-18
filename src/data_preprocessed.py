@@ -42,11 +42,13 @@ def preprocess_data(input_path, output_path):
     df.to_csv(output_path)
 
 if __name__ == "__main__":
-    raw_path = BASE_DIR / 'data/raw/AAPL_raw.csv'
-    processed_path = BASE_DIR / 'data/processed/AAPL_processed.csv'
 
-    if not raw_path.exists():
-        download_data('AAPL', '2018-01-01', '2024-12-31', raw_path)
+    empresas = ['AAPL', 'MSFT','GOOGL','TSLA','BRK.B','JPM','V','MA','NVDA']
+    for ticker in empresas: 
+        raw_path = BASE_DIR / f"data/raw/{ticker}_raw.csv"
+        processed_path = BASE_DIR/ f"data/processed/{ticker}_processed.csv"
+        
+        if not raw_path.exists():
+            download_data(ticker, '2018-01-01', '2024-12-31',raw_path    )
 
-
-    preprocess_data(raw_path, processed_path) 
+        preprocess_data(raw_path, processed_path)

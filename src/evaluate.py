@@ -23,5 +23,11 @@ def evaluete(data_path, model_path):
 	print(classification_report(y_test,y_pred))
 
 if __name__ == '__main__':
-	raw_path = BASE_DIR / "data/processed/AAPL_processed.csv"
-	evaluete(raw_path, "model.pkl")
+	empresas = ['AAPL', 'MSFT','GOOGL','TSLA','BRK.B','JPM','V','MA','NVDA']
+	for ticker in empresas: 
+		raw_path = BASE_DIR / f"data/processed/{ticker}_processed.csv"
+		model = f"{ticker}_model.pkl"
+		evaluete(raw_path, model)		
+	
+
+	

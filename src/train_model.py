@@ -1,5 +1,6 @@
 import pandas as pd 
 import joblib
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier #random forest para tener un mejor resultado
 from sklearn.feature_selection import RFE
@@ -52,6 +53,11 @@ def train_model(data_path, model_path):
     print(f'\nModelo guardad en {model_path}')
     print(f"Mejores features ({len(best_features)}): {', '.join(best_features)}")
 
+
+
 if __name__ == "__main__":
-	raw_path = BASE_DIR / "data/processed/AAPL_processed.csv"
-	train_model(raw_path, "model.pkl")
+
+    empresas = ['AAPL', 'MSFT','GOOGL','TSLA','BRK.B','JPM','V','MA','NVDA']
+    for ticker in empresas: 
+        raw_path = BASE_DIR / f"data/processed/{ticker}_processed.csv" 
+        train_model(raw_path, f"{ticker}_model.pkl")           
