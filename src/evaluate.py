@@ -26,7 +26,7 @@ if __name__ == '__main__':
 	empresas = ['AAPL', 'MSFT','GOOGL','TSLA','INTC','JPM','V','MA','NVDA']
 	for ticker in empresas: 
 		raw_path = BASE_DIR / f"data/processed/{ticker}_processed.csv"
-		model = f"{ticker}_model.pkl"
+		model =  f"model/{ticker}_model.pkl"
 		evaluete(raw_path, model)		
 	
 
