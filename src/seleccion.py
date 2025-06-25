@@ -60,7 +60,14 @@ def prediccion(ticker):
 	for feature in features:
 		while True:
 			try:
-				value = float(input(f"\n\nIngresa el valor de '{feature}':"))
+				tot = 0
+				if(feature == 'SMA_10'):
+					for i in range(9):
+						sma_10 = float(input(f"Ingrese el valor de {feature} de hace {i + 1} dias: "))
+						tot = value + sma_10
+						value = tot / 10 
+				else: 
+					value = float(input(f"\n\nIngresa el valor de '{feature}':"))
 				user_input[feature] = value
 				break
 			except ValueError:
@@ -72,9 +79,9 @@ def prediccion(ticker):
 	user_df = pd.DataFrame([user_input])
 	pred = model.predict(user_df)[0]
 	if pred == 1:
-		print("\n\nEl precio de la accion va a subir, es recomendable invertir hoy.")
+		print("\n\nEl precio de la accion va a subir, es recomendable invertirs.")
 	else: 
-		print("\n\nEl precio de la accion va a bajar, es recomendable invertir mañana.")
+		print("\n\nEl precio de la accion bajara, no es recomendable invertir.")
 
 
 
