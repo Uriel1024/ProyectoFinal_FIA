@@ -25,7 +25,6 @@ def menu():
 	print('\n\n1.Conocer las empresas.')
 	print('2.Conocer el historico de las empresas.')
 	print('3.Predecir el precio de las acciones.')
-	print('4.Sugerencias para invertir.')
 	print('Ingrese -1 para salir del programa.')
 
 def graphs(emp):
@@ -43,27 +42,40 @@ def graphs(emp):
 
 def prediccion(ticker):
 	model_path = BASE_DIR / f"src/model/{ticker}_model.pkl"
-	data_path = BASE_DIR / f"data/processed/{ticker}_processed.csv"
-	#model_path = BASE_DIR / f"model/{ticker}_model.pkl"
 
 
-	if not model_path.exists() or not data_path.exists():
-		print("Modelo o datos no encontrados para la empresa seleccionada.")
+
+	if not model_path.exists():
+		print("Modelo no encontrados para la empresa seleccionada.")
 		return
 
-
-	df = pd.read_csv(data_path, index_col='Date', parse_dates = True)
 
 	save_data = joblib.load(model_path)
 	model = save_data['model']
 	features = save_data['features']
+	user_input = {} #diccionario para guardar las respuetas del usuario y poder hacer la prediccion
+
+	print(f"\n\nIngresa los datos requeridos de la empresa {empresas[ticker]}")
+	
+	for feature in features:
+		while True:
+			try:
+				value = float(input(f"\n\nIngresa el valor de '{feature}':"))
+				user_input[feature] = value
+				break
+			except ValueError:
+				print("\n\nValor invalido, intenta nuevamente.")
 
 
-	latest_data = df.iloc[-1:][features]
+			
 
+	user_df = pd.DataFrame([user_input])
+	pred = model.predict(user_df)[0]
+	if pred == 1:
+		print("\n\nEl precio de la accion va a subir, es recomendable invertir hoy.")
+	else: 
+		print("\n\nEl precio de la accion va a bajar, es recomendable invertir mañana.")
 
-	pred = model.predict(latest_data)[0]
-	print(f"\nLa predicción para la acción de {empresas[ticker]} es que mañana va a {'subir' if pred == 1 else 'bajar'}.\n") 
 
 
 
