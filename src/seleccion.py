@@ -63,7 +63,7 @@ def prediccion(ticker):
 				tot = 0
 				if(feature == 'SMA_10'):
 					for i in range(9):
-						sma_10 = float(input(f"Ingrese el valor de {feature} de hace {i + 1} dias: "))
+						sma_10 = float(input(f"Ingrese el valor de close {i + 1} dias atras: "))
 						tot = value + sma_10
 						value = tot / 10 
 				else: 
