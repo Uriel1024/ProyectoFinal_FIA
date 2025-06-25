@@ -48,3 +48,36 @@ while op != -1:
 		fig.update_layout(title  = 'Precio historico ', xaxis_title = 'Fecha', yaxis_title = 'Precio')
 		fig.show()
 
+def listar_empresas():
+    """Retorna el diccionario de empresas disponibles."""
+    return empresas
+
+def mostrar_grafico(ticker):
+    """Muestra el gráfico de velas del ticker dado."""
+    ticker = ticker.upper()
+    raw_path = BASE_DIR / f"data/raw/{ticker}_raw.csv"
+
+    # Verifica si el archivo existe
+    if not raw_path.exists():
+        raise FileNotFoundError(f"No se encontró el archivo para {ticker}")
+
+    # Carga de datos
+    df = pd.read_csv(raw_path, parse_dates=['Date'])
+
+    # Creación del gráfico con Plotly
+    fig = go.Figure(data=[go.Candlestick(
+        x=df['Date'],
+        open=df['Open'],
+        high=df['High'],
+        low=df['Low'],
+        close=df['Close']
+    )])
+
+    fig.update_layout(
+        title=f'Precio histórico de {ticker}',
+        xaxis_title='Fecha',
+        yaxis_title='Precio',
+        template='plotly_dark'  
+    )
+
+    fig.show()
