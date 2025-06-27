@@ -10,4 +10,4 @@ scikit-learn
 joblib
 os 
 plotly
-
+rich

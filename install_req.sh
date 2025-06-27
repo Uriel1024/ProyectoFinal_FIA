@@ -7,3 +7,4 @@ pip install yfinance
 pip install scikit-learn 
 pip install joblib
 pip install plotly
+pip install rich
