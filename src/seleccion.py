@@ -2,6 +2,7 @@ import pandas as pd
 import joblib
 import plotly.graph_objects as go
 from pathlib import Path
+from rich import print
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,18 +57,15 @@ def prediccion(ticker):
 	user_input = {} #diccionario para guardar las respuetas del usuario y poder hacer la prediccion
 
 	print(f"\n\nIngresa los datos requeridos de la empresa {empresas[ticker]}")
+	print("\n\nEs recomendable entrar a las siguientes links para poder conocer los datos historicos de la empresa.")
+	print("\n\nhttps://mx.investing.com/")
+	print("\n\nhttps://es.finance.yahoo.com/")
+
 	
 	for feature in features:
 		while True:
-			try:
-				tot = 0
-				if(feature == 'SMA_10'):
-					for i in range(9):
-						sma_10 = float(input(f"Ingrese el valor de close {i + 1} dias atras: "))
-						tot = value + sma_10
-						value = tot / 10 
-				else: 
-					value = float(input(f"\n\nIngresa el valor de '{feature}':"))
+			try: 
+				value = float(input(f"\n\nIngresa el valor de '{feature}':"))
 				user_input[feature] = value
 				break
 			except ValueError:
@@ -79,7 +77,7 @@ def prediccion(ticker):
 	user_df = pd.DataFrame([user_input])
 	pred = model.predict(user_df)[0]
 	if pred == 1:
-		print("\n\nEl precio de la accion va a subir, es recomendable invertirs.")
+		print("\n\nEl precio de la accion va a subir, es recomendable invertir.")
 	else: 
 		print("\n\nEl precio de la accion bajara, no es recomendable invertir.")
 
@@ -94,9 +92,10 @@ while op != '-1':
 			print(f"\nTicker:{clave}", f'Empresa:{valor}')
 	elif op == '2':
 		emp = input('\n\nIngresa el ticker de la empresa para conocer sus datos historicos:')
-		graphs(emp)
+		graphs(emp.upper())
 	elif op == '3':
 		emp = input("\n\nIngresa el ticker de la empresa para concer si bajara o subira el precio:")
+		emp = emp.upper()
 		if emp in empresas: 
 			prediccion(emp)
 		else:
