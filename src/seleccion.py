@@ -1,6 +1,9 @@
 import pandas as pd
+import joblib
 import plotly.graph_objects as go
 from pathlib import Path
+from rich import print
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -9,75 +12,74 @@ empresas = {
 	'AAPL': 'Apple',
 	'MSFT': 'Microsoft',
 	'GOOGL': 'Google',
-	'TSLA' : 'TSLA',
-	'INTCL': 'Intel',
+	'TSLA' : 'Tesla',
+	'INTC': 'Intel',
 	'JPM': 'JPMorgan Chase & Co',
 	'V': 'Visa',
 	'MA': 'Masterd Card' ,
 	'NVDA': 'Nvidia' 
 }
 
-op = 0
+op = '0'
 
 def menu():
 	print('\n\n1.Conocer las empresas.')
 	print('2.Conocer el historico de las empresas.')
-	print('3.Predecir si subirar o no el precio de las acciones.')
+	print('3.Predecir el precio de las acciones.')
 	print('Ingrese -1 para salir del programa.')
 
+def graphs(emp):
+	raw_path = BASE_DIR /f"data/raw/{emp}_raw.csv"
+	df = pd.read_csv(raw_path, parse_dates= ['Date'])
+	fig = go.Figure(data = [go.Candlestick(
+		x = df['Date'],
+		open =df['Open'],
+		high = df['High'],
+		low =df['Low'],
+		close = df['Close']
+		)])
+	fig.update_layout(title = 'Precio historico' , xaxis_title = 'Fecha', yaxis_title = 'Precio' )
+	fig.show()	
+
+def prediccion(ticker):
+	model_path = BASE_DIR / f"src/model/{ticker}_model.pkl"
 
 
-while op != -1:
-	menu()
-	op = int(input('Ingresa una opcion para poder continuar:'))
-	if op == 1:
-		for clave, valor  in empresas.items():
-			print(f"\nTicker:{clave}", f'Empresa:{valor}')
-	elif op == 2:
-		emp = input('\n\nIngresa el ticker de la empresa para conocer sus datos historicos:')
-		raw_path = BASE_DIR / f"data/raw/{emp}_raw.csv"
-		df = pd.read_csv(raw_path, parse_dates=['Date'])
 
-		fig = go.Figure(data = [go.Candlestick(
-			x = df['Date'],
-			open =df['Open'],
-			high = df['High'],
-			low =df['Low'],
-			close = df['Close']
-			)])
-		fig.update_layout(title  = 'Precio historico ', xaxis_title = 'Fecha', yaxis_title = 'Precio')
-		fig.show()
+	if not model_path.exists():
+		print("Modelo no encontrados para la empresa seleccionada.")
+		return
 
-def listar_empresas():
-    """Retorna el diccionario de empresas disponibles."""
-    return empresas
 
-def mostrar_grafico(ticker):
-    """Muestra el gráfico de velas del ticker dado."""
-    ticker = ticker.upper()
-    raw_path = BASE_DIR / f"data/raw/{ticker}_raw.csv"
+	save_data = joblib.load(model_path)
+	model = save_data['model']
+	features = save_data['features']
+	user_input = {} #diccionario para guardar las respuetas del usuario y poder hacer la prediccion
 
-    # Verifica si el archivo existe
-    if not raw_path.exists():
-        raise FileNotFoundError(f"No se encontró el archivo para {ticker}")
+	print(f"\n\nIngresa los datos requeridos de la empresa {empresas[ticker]}")
+	print("\n\nEs recomendable entrar a las siguientes links para poder conocer los datos historicos de la empresa.")
+	print("\n\nhttps://mx.investing.com/")
+	print("\n\nhttps://es.finance.yahoo.com/")
 
-    # Carga de datos
-    df = pd.read_csv(raw_path, parse_dates=['Date'])
+	
+	for feature in features:
+		while True:
+			try: 
+				value = float(input(f"\n\nIngresa el valor de '{feature}':"))
+				user_input[feature] = value
+				break
+			except ValueError:
+				print("\n\nValor invalido, intenta nuevamente.")
 
-    # Creación del gráfico con Plotly
-    fig = go.Figure(data=[go.Candlestick(
-        x=df['Date'],
-        open=df['Open'],
-        high=df['High'],
-        low=df['Low'],
-        close=df['Close']
-    )])
 
-    fig.update_layout(
-        title=f'Precio histórico de {ticker}',
-        xaxis_title='Fecha',
-        yaxis_title='Precio',
-        template='plotly_dark'  
-    )
+			
 
-    fig.show()
+	user_df = pd.DataFrame([user_input])
+	pred = model.predict(user_df)[0]
+	if pred == 1:
+		print("\n\nEl precio de la accion va a subir, es recomendable invertir.")
+	else: 
+		print("\n\nEl precio de la accion bajara, no es recomendable invertir.")
+
+
+
