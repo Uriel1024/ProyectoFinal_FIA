@@ -83,22 +83,3 @@ def prediccion(ticker):
 
 
 
-
-while op != '-1':
-	menu()
-	op = input('Ingresa una opcion para poder continuar:')
-	if op == '1':
-		for clave, valor  in empresas.items():
-			print(f"\nTicker:{clave}", f'Empresa:{valor}')
-	elif op == '2':
-		emp = input('\n\nIngresa el ticker de la empresa para conocer sus datos historicos:')
-		graphs(emp.upper())
-	elif op == '3':
-		emp = input("\n\nIngresa el ticker de la empresa para concer si bajara o subira el precio:")
-		emp = emp.upper()
-		if emp in empresas: 
-			prediccion(emp)
-		else:
-			print("\nTicker no reconocido.")
-	elif op == '-1':
-		print('\n\nGracias por usar STOCKIA.')
